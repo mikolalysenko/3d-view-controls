@@ -22,8 +22,8 @@ function createCamera(element, options) {
   var camera = {
     element:            element,
     delay:              options.delay || 20,
-    rotateSpeed:        options.rotateSpeed || Math.PI,
-    zoomSpeed:          options.zoomSpeed || 0.1,
+    rotateSpeed:        options.rotateSpeed || 1,
+    zoomSpeed:          options.zoomSpeed || 1,
     translateSpeed:     options.translateSpeed || 1,
     flipX:              !!options.flipX,
     flipY:              !!options.flipY,
@@ -32,7 +32,7 @@ function createCamera(element, options) {
       var t = now()
       view.idle(t-camera.delay)
       view.flush(t-(100+camera.delay*2))
-      var ctime = t - 1.5*delay
+      var ctime = t - 2 * delay
       view.getMatrix(ctime, pmatrix)
       var allEqual = true
       for(var i=0; i<16; ++i) {
@@ -148,19 +148,29 @@ function createCamera(element, options) {
     var right   = element.clientRight
     var top     = element.clientTop
     var bottom  = element.clientBottom
+    var scale   = 1.0 / Math.min(right - left, bottom - top)
+    var dx      = scale * (x - left)
+    var dy      = scale * (y - top)
 
-    var dx = (x - left) / (right - left)
-    var dy = (y - top) / (bottom - top)
+    var flipX = camera.flipX ? 1 : -1
+    var flipY = camera.flipY ? 1 : -1
 
-    //TODO: rotate
-    //TODO: pan
-    //TODO: zoom?
+    if(ev.shiftKey && ev.buttons & 1) {
+      view.rotate(now(), 0, 0, -dx * camera.rotateSpeed * Math.PI)
+    } else if(ev.buttons & 1) {
+      view.rotate(now(), flipX * Math.PI * dx, -flipY * Math.PI * dy, 0)
+    } else if(ev.buttons & 2) {
+      view.pan(now(), camera.translateSpeed * dx, camera.translateSpeed * dy, 0)
+    } else if(ev.buttons & 4) {
+      //TODO: zoom?
+    }
 
     lastX = x
     lastY = y
   })
 
   element.addEventListener('wheel', function(ev) {
+    var dr = ev.deltaY
     //TODO: zoom
   })
 
