@@ -12,6 +12,8 @@ Middle mouse *or* scroll vertically | Zoom
 
 # Example
 
+Here is a complete working example of how to use this module in an application:
+
 ```javascript
 var createCamera = require('3d-view-controls')
 var bunny = require('bunny')
@@ -49,6 +51,8 @@ function render() {
 }
 render()
 ```
+
+[You can try it out in your browser right now](https://mikolalysenko.github.io/3d-view-controls).
 
 # Install
 
