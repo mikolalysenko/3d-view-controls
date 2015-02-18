@@ -37,6 +37,8 @@ function createCamera(element, options) {
   var up      = [0,0,0]
   var center  = [0,0,0]
   var distance = 0.0
+  var width   = element.clientWidth
+  var height  = element.clientHeight
 
   var camera = {
     element:            element,
@@ -59,8 +61,13 @@ function createCamera(element, options) {
         allEqual = allEqual && (pmatrix[i] === matrix[i])
         matrix[i] = pmatrix[i]
       }
+      var sizeChanged = 
+          element.clientWidth === width && 
+          element.clientHeight === height
+      width  = element.clientWidth
+      height = element.clientHeight
       if(allEqual) {
-        return false
+        return !sizeChanged
       }
       view.getUp(ctime, up)
       view.getCenter(ctime, center)
