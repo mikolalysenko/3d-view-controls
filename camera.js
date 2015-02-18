@@ -12,7 +12,6 @@ function createCamera(element, options) {
   options = options || {}
 
   var limits  = [ 0.01, Infinity ]
-  
   if('distanceLimits' in options) {
     limits[0] = options.distanceLimits[0]
     limits[1] = options.distanceLimits[1]
@@ -163,7 +162,7 @@ function createCamera(element, options) {
 
   var lastX = 0, lastY = 0
   mouseChange(element, function(buttons, x, y, mods) {
-    var scale = 1.0 / Math.min(element.clientWidth, element.clientHeight)
+    var scale = 1.0 / element.clientHeight
     var dx    = scale * (x - lastX)
     var dy    = scale * (y - lastY)
 
