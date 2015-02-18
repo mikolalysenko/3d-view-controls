@@ -56,17 +56,18 @@ Creates a new camera object.
 
 * `element` is a DOM node onto which this
 * `options` is an object with the following optional properties:
-    + `eye`
-    + `center`
-    + `up`
-    + `mode`
-    + `delay`
-    + `rotateSpeed`
-    + `zoomSpeed`
-    + `translateSpeed`
-    + `flipX`
-    + `flipY`
-    + `distanceLimits`
+    + `eye` - the position of the camera in world coordinates (Default `[0,0,10]`)
+    + `center` - the target of the camera in world coordinates (Default `[0,0,0]`)
+    + `up` - the up vector of the camera (Default `[0,1,0]`)
+    + `mode` - the interaction mode for the camera (Default `'orbit'`)
+    + `delay` - amount to delay interactions by for interpolation in ms (Default `16`)
+    + `rotateSpeed` - rotation scaling factor (Default `1`)
+    + `zoomSpeed` - zoom scaling factor (Default `1`)
+    + `translateSpeed` - translation/panning scale factor (Default `1`)
+    + `flipX` - flip X axis for rotations (Default `false`)
+    + `flipY` - flip Y axis for rotations (Default `false`)
+    + `zoomMin` - minimum zoom distance (Default `0.01`)
+    + `zoomMax` - maximum zoom distance (Default `Infinity`)
 
 ## Geometric properties
 
@@ -76,9 +77,9 @@ The current view matrix for
 #### `camera.mode`
 The current interaction mode for the camera.  Possible values include:
 
-* `turntable`
-* `orbit`
-* `matrix`
+* `orbit` - free orbiting mode
+* `turntable` - behaves like a turntable/gimbal
+* `matrix` - manual matrix control
 
 #### `camera.modes`
 An array of all supported mdoes for the camera.  Defaults to `['turntable', 'orbit', 'matrix']`
@@ -100,33 +101,57 @@ Euclidean distance from `eye` to `center`
 #### `camera.tick()`
 Updates the camera state.  Call this before each frame is rendered to compute the current state of the camera.
 
-#### `camera.lookAt(center, eye, up)`
+**Returns** `true` if the state of the camera has changed since the last call to `tick`
 
-#### `camera.rotate(pitch, yaw, roll)`
+#### `camera.lookAt(center, eye, up)`
+Sets the camera center/eye/up vector to look at a fixed target
+
+* `center` is the new center/target for the camera
+* `eye` is the position of the camera in world coordinates
+* `up` is a vector pointing up
+
+#### `camera.rotate(yaw, pitch, roll)`
+Applies an incremental rotation to the camera
+
+* `yaw` is the amount to rotate about the y-axis (in xz plane of camera)
+* `pitch` is the amount to rotate about the x-axis (in yz plane of camera)
+* `roll` is the amount to rotate about the forward axis (in xy plane of camera)
 
 #### `camera.pan(dx, dy, dz)`
+Applies a relative motion to the camera, moving in view coordinates
+
+* `dx,dy,dz` are the components of the camera motion vector
 
 #### `camera.translate(dx, dy, dz)`
+Translates the camera in world coordinates
 
+* `dx,dy,dz` are the components of the translation vector
 
 ## Tuning parameters
 
 #### `camera.distanceLimits`
+A 2D array representing the `[lo,hi]` bounds on the zoom distance.  Note that `0 < lo < hi`.
 
 #### `camera.flipX`
+A flag controlling whether the camera rotation is flipped along the x-axis
 
 #### `camera.flipY`
+A flag controlling whether the camera rotation is flipped along the y-axis
 
 #### `camera.delay`
+The amount of delay on the interpolation of the camera state in ms
 
 #### `camera.rotateSpeed`
+Camera rotation speed scaling factor
 
 #### `camera.zoomSpeed`
+Camera zoom speed scaling factor
 
 #### `camera.translateSpeed`
+Camera translation speed scaling factor
 
 #### `camera.element`
-
+The DOM element the camera is attached to
 
 # License
 (c) 2015 Mikola Lysenko. MIT License
