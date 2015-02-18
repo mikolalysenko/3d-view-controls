@@ -1,5 +1,14 @@
 # 3d-view-controls
-An easy to use 3D camera that works out of the box.  This is a wrapper over 3d-view with extra features to allow for 
+An easy to use 3D camera with input binding.
+
+Default controls:
+
+Button | Interaction
+-------|------------
+Left mouse | Rotate
+Shift + left mouse *or* scroll horizontally | Roll
+Right mouse | Pan
+Middle mouse *or* scroll vertically | Zoom
 
 # Example
 
