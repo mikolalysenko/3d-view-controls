@@ -174,7 +174,7 @@ function createCamera(element, options) {
 
     if(buttons & 1) {
       if(mods.shift) {
-        view.rotate(now(), 0, 0, dx * drot)
+        view.rotate(now(), 0, 0, -dx * drot)
       } else {
         view.rotate(now(), flipX * drot * dx, -flipY * drot * dy, 0)
       }
@@ -192,7 +192,7 @@ function createCamera(element, options) {
     var flipX = camera.flipX ? 1 : -1
     var t = now()
     if(Math.abs(dx) > Math.abs(dy)) {
-      view.rotate(t, 0, 0, dx * flipX * Math.PI * camera.rotateSpeed / window.innerWidth)
+      view.rotate(t, 0, 0, -dx * flipX * Math.PI * camera.rotateSpeed / window.innerWidth)
     } else {
       view.pan(t, 0, 0, camera.zoomSpeed * dy / window.innerHeight * distance)
     }
