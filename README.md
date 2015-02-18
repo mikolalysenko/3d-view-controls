@@ -80,8 +80,20 @@ Creates a new camera object.
 
 ## Geometric properties
 
+Note that you can update any property by assigning to it.  For example:
+
+```javascript
+camera.eye = [100, 100, 100]
+
+camera.matrix = [
+  1, 0, 0, 0,
+  0, 1, 0, 0,
+  0, 0, 1, 0,
+  0, 0, 0, 1]
+```
+
 #### `camera.matrix`
-The current view matrix for 
+A 4x4 matrix encoded as a length 16 array representing the homogeneous transformation from world coordinates to view (camera) coordinates.
 
 #### `camera.mode`
 The current interaction mode for the camera.  Possible values include:
@@ -89,9 +101,6 @@ The current interaction mode for the camera.  Possible values include:
 * `orbit` - free orbiting mode
 * `turntable` - behaves like a turntable/gimbal
 * `matrix` - manual matrix control
-
-#### `camera.modes`
-An array of all supported mdoes for the camera.  Defaults to `['turntable', 'orbit', 'matrix']`
 
 #### `camera.eye`
 The position of the camera in world coordinates
