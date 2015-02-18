@@ -7,37 +7,37 @@ An easy to use 3D camera that works out of the box.  This is a wrapper over 3d-v
 var createCamera = require('3d-view-controls')
 var bunny = require('bunny')
 var perspective = require('gl-mat4/perspective')
-var fit = require('canvas-fit')
 var createMesh = require('gl-simplicial-complex')
 
 var canvas = document.createElement('canvas')
-var gl = canvas.getContext('webgl')
 document.body.appendChild(canvas)
+window.addEventListener('resize', require('canvas-fit')(canvas))
 
-window.addEventListener('resize', fit(canvas))
+var gl = canvas.getContext('webgl')
 
-var camera = createCamera({
-  eye:    [0,0,10],
-  mode:   'orbit'
+var camera = createCamera(canvas, {
+  eye:    [50,0,0],
+  center: [0,0,0],
+  zoomMax: 500
 })
 
 var mesh = createMesh(gl, {
   cells:      bunny.cells,
   positions:  bunny.positions,
-  cellColor:  [1,0,0]
+  colormap:   'jet'
 })
 
 function render() {
   requestAnimationFrame(render)
-
-  camera.tick()
-
-  mesh.draw({
-    projection: perspective([])
-    view: camera.matrix
-  })
+  if(camera.tick()) {
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+    gl.enable(gl.DEPTH_TEST)
+    mesh.draw({
+      projection: perspective([], Math.PI/4, canvas.width/canvas.height, 0.01, 1000),
+      view: camera.matrix
+    })
+  }
 }
-
 render()
 ```
 
