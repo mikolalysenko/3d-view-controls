@@ -3,7 +3,6 @@
 module.exports = createCamera
 
 var now         = require('right-now')
-var sgn         = require('signum')
 var createView  = require('3d-view')
 var mouseChange = require('mouse-change')
 var mouseWheel  = require('mouse-wheel')
