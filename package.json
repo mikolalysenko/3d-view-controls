@@ -1,13 +1,13 @@
 {
   "name": "3d-view-controls",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "A 3D camera with hooks for input handling",
   "main": "camera.js",
   "directories": {
     "example": "example"
   },
   "dependencies": {
-    "3d-view": "^1.0.0",
+    "3d-view": "^2.0.0",
     "mouse-wheel": "^1.0.2",
     "right-now": "^1.0.0",
     "mouse-change": "^1.1.1"

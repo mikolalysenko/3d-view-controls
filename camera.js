@@ -31,11 +31,7 @@ function createCamera(element, options) {
     distanceLimits: limits
   })
 
-  var matrix  = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-  var pmatrix = matrix.slice()
-  var eye     = [0,0,0]
-  var up      = [0,0,0]
-  var center  = [0,0,0]
+  var pmatrix = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
   var distance = 0.0
   var width   = element.clientWidth
   var height  = element.clientHeight
@@ -55,11 +51,12 @@ function createCamera(element, options) {
       view.idle(t-delay)
       view.flush(t-(100+delay*2))
       var ctime = t - 2 * delay
-      view.getMatrix(ctime, pmatrix)
+      view.recalcMatrix(ctime)
       var allEqual = true
+      var matrix = view.computedMatrix
       for(var i=0; i<16; ++i) {
         allEqual = allEqual && (pmatrix[i] === matrix[i])
-        matrix[i] = pmatrix[i]
+        pmatrix[i] = matrix[i]
       }
       var sizeChanged = 
           element.clientWidth === width && 
@@ -69,10 +66,7 @@ function createCamera(element, options) {
       if(allEqual) {
         return !sizeChanged
       }
-      view.getUp(ctime, up)
-      view.getCenter(ctime, center)
-      view.getEye(ctime, eye)
-      distance = view.getDistance(ctime)
+      distance = Math.exp(view.computedRadius[0])
       return true
     },
     lookAt: function(center, eye, up) {
@@ -92,11 +86,11 @@ function createCamera(element, options) {
   Object.defineProperties(camera, {
     matrix: {
       get: function() {
-        return matrix
+        return view.computedMatrix
       },
       set: function(mat) {
         view.setMatrix(view.lastT(), mat)
-        return matrix
+        return view.computedMatrix
       },
       enumerable: true
     },
@@ -112,31 +106,31 @@ function createCamera(element, options) {
     },
     center: {
       get: function() {
-        return center
+        return view.computedCenter
       },
       set: function(ncenter) {
         view.lookAt(view.lastT(), ncenter)
-        return center
+        return view.computedCenter
       },
       enumerable: true
     },
     eye: {
       get: function() {
-        return eye
+        return view.computedEye
       },
       set: function(neye) {
         view.lookAt(view.lastT(), null, neye)
-        return eye
+        return view.computedEye
       },
       enumerable: true
     },
     up: {
       get: function() {
-        return up
+        return view.computedUp
       },
       set: function(nup) {
         view.lookAt(view.lastT(), null, null, nup)
-        return up
+        return view.computedUp
       },
       enumerable: true
     },
@@ -146,7 +140,7 @@ function createCamera(element, options) {
       },
       set: function(d) {
         view.setDistance(view.lastT(), d)
-        return distance
+        return d
       },
       enumerable: true
     },
@@ -196,11 +190,13 @@ function createCamera(element, options) {
 
   mouseWheel(element, function(dx, dy, dz) {
     var flipX = camera.flipX ? 1 : -1
+    var flipY = camera.flipY ? 1 : -1
     var t = now()
     if(Math.abs(dx) > Math.abs(dy)) {
       view.rotate(t, 0, 0, -dx * flipX * Math.PI * camera.rotateSpeed / window.innerWidth)
     } else {
-      view.pan(t, 0, 0, camera.zoomSpeed * dy / window.innerHeight * distance)
+      var kzoom = camera.zoomSpeed * flipY * dy / window.innerHeight * (t - view.lastT()) / 100.0
+      view.pan(t, 0, 0, distance * (Math.exp(kzoom) - 1))
     }
   }, true)
 
