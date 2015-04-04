@@ -7,7 +7,7 @@
     "example": "example"
   },
   "dependencies": {
-    "3d-view": "^1.0.0",
+    "3d-view": "^2.0.0",
     "mouse-wheel": "^1.0.2",
     "right-now": "^1.0.0",
     "mouse-change": "^1.1.1"
