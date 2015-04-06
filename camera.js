@@ -179,9 +179,10 @@ function createCamera(element, options) {
         view.rotate(now(), flipX * drot * dx, -flipY * drot * dy, 0)
       }
     } else if(buttons & 2) {
-      view.pan(now(), camera.translateSpeed * dx * distance, -camera.translateSpeed * dy * distance, 0)
+      view.pan(now(), -camera.translateSpeed * dx * distance, camera.translateSpeed * dy * distance, 0)
     } else if(buttons & 4) {
-      view.pan(now(), 0, 0, camera.zoomSpeed * dy * distance)
+      var kzoom = camera.zoomSpeed * dy / window.innerHeight * (t - view.lastT()) / 100.0
+      view.pan(t, 0, 0, distance * (Math.exp(kzoom) - 1))
     }
 
     lastX = x
