@@ -37,6 +37,7 @@ function createCamera(element, options) {
   var height  = element.clientHeight
 
   var camera = {
+    view:               view,
     element:            element,
     delay:              options.delay          || 16,
     rotateSpeed:        options.rotateSpeed    || 1,
