@@ -173,16 +173,18 @@ function createCamera(element, options) {
 
     var drot  = Math.PI * camera.rotateSpeed
 
+    var t = now()
+
     if(buttons & 1) {
       if(mods.shift) {
-        view.rotate(now(), 0, 0, -dx * drot)
+        view.rotate(t, 0, 0, -dx * drot)
       } else {
-        view.rotate(now(), flipX * drot * dx, -flipY * drot * dy, 0)
+        view.rotate(t, flipX * drot * dx, -flipY * drot * dy, 0)
       }
     } else if(buttons & 2) {
-      view.pan(now(), -camera.translateSpeed * dx * distance, camera.translateSpeed * dy * distance, 0)
+      view.pan(t, -camera.translateSpeed * dx * distance, camera.translateSpeed * dy * distance, 0)
     } else if(buttons & 4) {
-      var kzoom = camera.zoomSpeed * dy / window.innerHeight * (t - view.lastT()) / 100.0
+      var kzoom = camera.zoomSpeed * dy / window.innerHeight * (t - view.lastT()) * 50.0
       view.pan(t, 0, 0, distance * (Math.exp(kzoom) - 1))
     }
 
