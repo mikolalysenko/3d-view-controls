@@ -1,7 +1,7 @@
 var createCamera = require('../camera')
 var bunny = require('bunny')
 var perspective = require('gl-mat4/perspective')
-var createMesh = require('gl-simplicial-complex')
+var createMesh = require('gl-mesh3d')
 
 var canvas = document.createElement('canvas')
 document.body.appendChild(canvas)
