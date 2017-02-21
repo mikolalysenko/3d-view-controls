@@ -6,6 +6,7 @@ var now         = require('right-now')
 var createView  = require('3d-view')
 var mouseChange = require('mouse-change')
 var mouseWheel  = require('mouse-wheel')
+var mouseOffset = require('mouse-event-offset')
 
 function createCamera(element, options) {
   element = element || document.body
@@ -59,8 +60,8 @@ function createCamera(element, options) {
         allEqual = allEqual && (pmatrix[i] === matrix[i])
         pmatrix[i] = matrix[i]
       }
-      var sizeChanged = 
-          element.clientWidth === width && 
+      var sizeChanged =
+          element.clientWidth === width &&
           element.clientHeight === height
       width  = element.clientWidth
       height = element.clientHeight
@@ -156,14 +157,31 @@ function createCamera(element, options) {
       enumerable: true
     }
   })
-  
+
   element.addEventListener('contextmenu', function(ev) {
     ev.preventDefault()
     return false
   })
 
-  var lastX = 0, lastY = 0
-  mouseChange(element, function(buttons, x, y, mods) {
+  var lastX = 0, lastY = 0, lastMods = {shift: false, control: false, alt: false, meta: false}
+  mouseChange(element, handleInteraction)
+
+  //enable simple touch interactions
+  element.addEventListener('touchstart', function (ev) {
+    var xy = mouseOffset(ev.changedTouches[0], element)
+    handleInteraction(0, xy[0], xy[1], lastMods)
+    handleInteraction(1, xy[0], xy[1], lastMods)
+  })
+  element.addEventListener('touchmove', function (ev) {
+    var xy = mouseOffset(ev.changedTouches[0], element)
+    handleInteraction(1, xy[0], xy[1], lastMods)
+  })
+  element.addEventListener('touchend', function (ev) {
+    var xy = mouseOffset(ev.changedTouches[0], element)
+    handleInteraction(0, lastX, lastY, lastMods)
+  })
+
+  function handleInteraction (buttons, x, y, mods) {
     var scale = 1.0 / element.clientHeight
     var dx    = scale * (x - lastX)
     var dy    = scale * (y - lastY)
@@ -190,7 +208,8 @@ function createCamera(element, options) {
 
     lastX = x
     lastY = y
-  })
+    lastMods = mods
+  }
 
   mouseWheel(element, function(dx, dy, dz) {
     var flipX = camera.flipX ? 1 : -1

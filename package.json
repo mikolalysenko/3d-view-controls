@@ -8,14 +8,15 @@
   },
   "dependencies": {
     "3d-view": "^2.0.0",
+    "mouse-change": "^1.1.1",
+    "mouse-event-offset": "^3.0.2",
     "mouse-wheel": "^1.0.2",
-    "right-now": "^1.0.0",
-    "mouse-change": "^1.1.1"
+    "right-now": "^1.0.0"
   },
   "devDependencies": {
     "bunny": "^1.0.1",
     "canvas-fit": "^1.2.0",
-    "gl-simplicial-complex": "^3.0.2",
+    "gl-mesh3d": "^1.2.0",
     "gl-mat4": "^1.1.2"
   },
   "scripts": {
