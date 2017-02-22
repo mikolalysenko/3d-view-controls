@@ -1,6 +1,6 @@
 {
   "name": "3d-view-controls",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "A 3D camera with hooks for input handling",
   "main": "camera.js",
   "directories": {
