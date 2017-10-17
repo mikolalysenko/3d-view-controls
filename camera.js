@@ -151,7 +151,7 @@ function createCamera(element, options) {
         return view.getDistanceLimits(limits)
       },
       set: function(v) {
-        view.setDistanceLimits(v)
+        view.setDistanceLimits(v[0], v[1])
         return v
       },
       enumerable: true
