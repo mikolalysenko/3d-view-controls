@@ -11,7 +11,7 @@
     "has-passive-events": "^1.0.0",
     "mouse-change": "^1.1.1",
     "mouse-event-offset": "^3.0.2",
-    "mouse-wheel": "^1.0.2",
+    "mouse-wheel": "1.1.0",
     "right-now": "^1.0.0"
   },
   "devDependencies": {
